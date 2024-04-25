@@ -1,0 +1,10 @@
+package com.webSocketExample.webSocketExample.model;
+
+import lombok.Data;
+
+@Data
+public class Message {
+    private String content;
+
+
+}
