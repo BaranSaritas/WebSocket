@@ -8,6 +8,7 @@ public class WebSocketExampleApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WebSocketExampleApplication.class, args);
+
 	}
 
 }

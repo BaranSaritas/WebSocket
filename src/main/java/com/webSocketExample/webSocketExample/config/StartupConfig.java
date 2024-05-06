@@ -11,7 +11,6 @@ public class StartupConfig implements CommandLineRunner {
 
     private final SocketIOServer socketIOServer;
 
-
     @Override
     public void run(String... args) throws Exception {
         socketIOServer.start();

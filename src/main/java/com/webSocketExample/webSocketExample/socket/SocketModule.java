@@ -18,19 +18,19 @@ public class SocketModule {
         this.socketIOServer = socketIOServer;
         socketIOServer.addConnectListener(onConnected());
         socketIOServer.addDisconnectListener(onDisconnected());
-        socketIOServer.addEventListener("send_message", Message.class,onMessageReceived());
+        socketIOServer.addEventListener("message_api", Message.class,onMessageReceived());
     }
 
         private DataListener<Message> onMessageReceived() {
          return (senderClient,data,ackSender) -> {
-             log.info(String.format("%s -> %s",senderClient.getSessionId(),data.getContent()));
+             log.info(String.format("%s -> %s",senderClient.getSessionId(),data.getData()));
              //getBroadcastOperations herkese gonderir
           //   senderClient.getNamespace().getBroadcastOperations().sendEvent("get_message",data.getContent());
              String room = senderClient.getHandshakeData().getSingleUrlParam("channel");
 
              senderClient.getNamespace().getRoomOperations(room).getClients().forEach(client -> {
                  if(!client.getSessionId().equals(senderClient.getSessionId())){
-                     client.sendEvent("get_message",data.getContent());
+                     client.sendEvent("get_message",data.getData());
                  }
              } );
          };
@@ -40,7 +40,7 @@ public class SocketModule {
             String room = client.getHandshakeData().getSingleUrlParam("channel");
             client.joinRoom(room);
             client.getNamespace().getRoomOperations(room)
-                    .sendEvent("get_message", String.format("%s connected to -> %s",
+                    .sendEvent("get_message", String.format("%s connected  -> %s",
                             client.getSessionId(), room
                     ));
             log.info(String.format("SocketID: %s connected", client.getSessionId().toString()));
@@ -51,7 +51,7 @@ public class SocketModule {
         return client -> {
             String room = client.getHandshakeData().getSingleUrlParam("channel");
             client.getNamespace().getRoomOperations(room)
-                    .sendEvent("get_message", String.format("%s disconnected from -> %s",
+                    .sendEvent("get_message", String.format("%s disconnected -> %s",
                             client.getSessionId(), room
                     ));
             log.info(String.format("SocketID: %s disconnected!", client.getSessionId().toString()));
