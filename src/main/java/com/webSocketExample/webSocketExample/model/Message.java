@@ -7,8 +7,6 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import java.sql.Timestamp;
 
 @Data
@@ -20,7 +18,7 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Timestamp timestamp;
+    private Timestamp timestamp  = new Timestamp(System.currentTimeMillis());
     private String senderId;
     private String data;
     private String eventId;
